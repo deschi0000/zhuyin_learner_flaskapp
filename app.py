@@ -1,7 +1,8 @@
 import re
 from datetime import datetime
-
 from flask import Flask,render_template, request, redirect
+from zhuyin_type import ZhuyinType
+from zhuyin_practicer import load_zhuyin_json_list
 
 app = Flask(__name__)
 
@@ -32,8 +33,17 @@ def hello_there(name):
     content = "Hello there, " + clean_name + "! It's " + formatted_now
     return content
 
-@app.route("/practice/<type>", methods=["GET","POST"])
-def practice(type):
+@app.route("/practice/<selected_type>", methods=["GET","POST"])
+def practice(selected_type):
 
-    content = "The type: " + type
-    return content
+
+
+    zhuyin_practice_list = load_zhuyin_json_list(selected_type)
+    # [i for i in zhuyin_practice_list]
+
+    
+    # content = "The type: " + type
+    # return content
+    return render_template("practice.html",
+                           type_to_practice = selected_type.capitalize(),
+                           zhuyin_practice_list = zhuyin_practice_list)
