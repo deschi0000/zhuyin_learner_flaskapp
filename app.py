@@ -1,0 +1,39 @@
+import re
+from datetime import datetime
+
+from flask import Flask,render_template, request, redirect
+
+app = Flask(__name__)
+
+# Ensure templates are auto-reloaded
+app.config["TEMPLATES_AUTO_RELOAD"] = True
+
+
+@app.route("/", methods=["GET","POST"])
+def home():
+    # return "Hello, Flask!"
+    return render_template("index.html")
+
+
+@app.route("/hello/<name>", methods=["GET", "POST"])
+def hello_there(name):
+    now = datetime.now()
+    formatted_now = now.strftime("%A, %d %B, %Y at %X")
+
+    # Filter the name argument to letters only using regular expressions. URL arguments
+    # can contain arbitrary text, so we restrict to safe characters only.
+    match_object = re.match("[a-zA-Z]+", name)
+
+    if match_object:
+        clean_name = match_object.group(0)
+    else:
+        clean_name = "Friend"
+
+    content = "Hello there, " + clean_name + "! It's " + formatted_now
+    return content
+
+@app.route("/practice/<type>", methods=["GET","POST"])
+def practice(type):
+
+    content = "The type: " + type
+    return content

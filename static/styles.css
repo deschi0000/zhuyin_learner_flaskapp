@@ -1,0 +1,28 @@
+body {
+    background-color: rgb(242, 242, 242);
+    /* background-color: rgb(233, 233, 233); */
+}
+
+.content-container {
+    width: 80%;
+    margin: 10rem auto;
+    text-align: center;
+}
+
+.button-container {
+    margin-top: 2rem;
+}
+
+.select-container {
+    margin-top: 1rem;
+}
+
+/* .form-select {
+    background-color: rgb(53, 53, 53); 
+    color: white;
+} */
+
+h1, p {
+    color:rgb(128, 128, 128)
+    /* color:rgb(170, 170, 170) */
+}
