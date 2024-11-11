@@ -1,6 +1,7 @@
 import json
 import os
-from scorekeeper import ScoreKeeper
+from score_keeper import ScoreKeeper
+from zhuyin_type import ZhuyinType
 
 
 game_score = ScoreKeeper()
@@ -50,17 +51,17 @@ def run_questions(question_dict):
 
     # print(f"{question} ?")
     # print(f"{options} ?")
-    
 
 
+def load_zhuyin_json_list(zhuyin_type):
 
-def main():
+    '''Returns a list of the argument type (from enum)'''
 
     consonant_list = []
     vowel_list = []
-    
+    all_list = []
     file_path = os.path.join(os.getcwd(), 'zhuyin.json')
-
+    
     try:
         with open(file_path, 'r', encoding='utf-8') as file:
             data = json.load(file)
@@ -70,19 +71,49 @@ def main():
             # Get the vowels
             vowel_list = data["vowels"]
 
+            #Get everything
+            all_list = consonant_list + vowel_list
+
     except FileNotFoundError:
         print(f"Error: The file '{file_path}' was not found.")
     except json.JSONDecodeError:
         print("Error: Failed to decode JSON. Please check the JSON format.")
 
+    # Return the type that is being passed as an argument
+    # if zhuyin_type is ZhuyinType.CONSONANT:
+    #     return consonant_list
+    # elif zhuyin_type is ZhuyinType.VOWEL:
+    #     return vowel_list
+    # elif zhuyin_type is ZhuyinType.ALL:
+    #     return all_list
+    # else:
+    #     return f"Incorrect Argument provided: {zhuyin_type}"
+
+    if zhuyin_type == "consonant":
+        return consonant_list
+    elif zhuyin_type == "vowel":
+        return vowel_list
+    elif zhuyin_type == "all":
+        return all_list
+    else:
+        return all_list
+
+
+
+def main():
+
+
     # If doing the score here:
     # total_questions_amount = len(consonant_list) + len(vowel_list)
     # game_score = ScoreKeeper(total_questions_amount)
-    
-    # Add the list here, or abstract it away later
-    game_score.add_to_total(len(consonant_list))
+    # list_to_practice = load_zhuyin_json(ZhuyinType.ALL)
+    list_to_practice = load_zhuyin_json_list("all")
 
-    for i in consonant_list:
+
+    # Add the list here, or abstract it away later
+    game_score.add_to_total(len(list_to_practice))
+
+    for i in list_to_practice:
         # print(i)
         run_questions(i)
 
