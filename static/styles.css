@@ -2,8 +2,24 @@ body {
     background-color: rgb(242, 242, 242);
     /* background-color: rgb(233, 233, 233); */
 }
+.title {
+    margin-top: 8rem;
+}
 
-.content-container {
+.content-container{
+    width: 50%;
+    margin: 3rem auto;
+    text-align: center;
+    background-color: rgb(68, 68, 68);
+    padding: 2rem;
+    min-height: 550px;
+}
+
+.results-container {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    min-height: 15rem;
     width: 50%;
     margin: 3rem auto;
     text-align: center;
@@ -26,12 +42,41 @@ body {
 }
 
 #question-id{
-    font-size: 100px;
+    font-size: 90px;
     color: rgb(221, 228, 235);
+}
+
+#result-id {
+    font-size: 100px;
+    /* color: red; */
+}
+.result {
+    min-height: 5rem;
+}
+
+#fraction-id {
+    opacity: .8;
 }
 
 .options, .question {
     margin: 2rem;
+}
+
+#result-id {
+    text-align: center;
+}
+
+.practice-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 2rem auto;
+    text-align: center;
+}
+
+.practice-list li {
+    font-size: 24px;
+    color: rgb(221, 228, 235);
+    margin: 10px 0;
 }
 
 .choice {
