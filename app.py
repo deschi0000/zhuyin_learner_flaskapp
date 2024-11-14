@@ -37,13 +37,11 @@ def hello_there(name):
 @app.route("/practice/<selected_type>", methods=["GET","POST"])
 def practice(selected_type):
 
-
-
     zhuyin_practice_list = load_zhuyin_json_list(selected_type)
     # [i for i in zhuyin_practice_list]
 
     random.shuffle(zhuyin_practice_list)
-    print(zhuyin_practice_list)
+    # print(zhuyin_practice_list)
     # content = "The type: " + type
     # return content
     return render_template("practice.html",
@@ -52,27 +50,14 @@ def practice(selected_type):
 
 
 
-# @app.route("/practice/<selected_type>", methods=["GET", "POST"])
-# def practice(selected_type):
-#     zhuyin_practice_list = load_zhuyin_json_list(selected_type)
+@app.route("/practice/result", methods=["GET","POST"])
+def result():
+    if request.method == "POST":
+        correct_answers = request.form.get("correct_answers")
+        total_questions = request.form.get("total_questions")
+        return render_template("result.html",
+                               correct_answers = correct_answers,
+                               total_questions = total_questions
+                               )
 
-#     if request.method == "POST":
-#         # Process answers
-#         results = []
-#         for i, zhuyin in enumerate(zhuyin_practice_list, start=1):
-#             user_answer = request.form.get(f"answer_{i}")
-#             correct = user_answer == zhuyin["answer"]
-#             results.append({
-#                 "question": zhuyin["question"],
-#                 "user_answer": user_answer,
-#                 "correct_answer": zhuyin["answer"],
-#                 "correct": correct
-#             })
 
-#         # Render results page
-#         return render_template("results.html", results=results, type_to_practice=selected_type.capitalize())
-
-#     # Initial GET request to load the practice questions
-#     return render_template("practice.html",
-#                            type_to_practice=selected_type.capitalize(),
-#                            zhuyin_practice_list=zhuyin_practice_list)
