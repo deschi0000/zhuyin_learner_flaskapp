@@ -5,7 +5,7 @@ body {
 
 .content-container {
     width: 50%;
-    margin: 10rem auto;
+    margin: 3rem auto;
     text-align: center;
     background-color: rgb(68, 68, 68);
     padding: 2rem;
@@ -18,7 +18,16 @@ body {
 }
 
 .question {
-    background-color: aliceblue;
+    /* background-color: aliceblue; */
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    min-height: 15rem;
+}
+
+#question-id{
+    font-size: 100px;
+    color: rgb(221, 228, 235);
 }
 
 .options, .question {

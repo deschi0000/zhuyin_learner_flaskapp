@@ -1,3 +1,4 @@
+import random
 import re
 from datetime import datetime
 from flask import Flask,render_template, request, redirect
@@ -41,7 +42,8 @@ def practice(selected_type):
     zhuyin_practice_list = load_zhuyin_json_list(selected_type)
     # [i for i in zhuyin_practice_list]
 
-    
+    random.shuffle(zhuyin_practice_list)
+    print(zhuyin_practice_list)
     # content = "The type: " + type
     # return content
     return render_template("practice.html",

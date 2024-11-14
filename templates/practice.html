@@ -9,25 +9,25 @@
         <div class="container">
             <!-- {{zhuyin}} -->
             <div class="row align-items-center question">
-                <div class="col-12"><h1 id="question"></h1></div>
+                <div class="col-12"><h1 id="question-id"></h1></div>
             </div>
             <div class="row justify-content-between options">
                 <div class="col-5">
-                    <button class="choice btn btn-primary choice-button" data-answer=1 id="q1">
+                    <button class="choice btn btn-primary choice-button w-100" data-answer=1 id="q1">
                     </button>
                 </div>
                 <div class="col-5">
-                    <button class="choice btn btn-primary choice-button" data-answer=2 id="q2">
+                    <button class="choice btn btn-primary choice-button w-100" data-answer=2 id="q2">
                     </button>
                 </div>
             </div>
             <div class="row justify-content-between options">
                 <div class="col-5">
-                    <button class="choice btn btn-primary choice-button" data-answer=3 id="q3">
+                    <button class="choice btn btn-primary choice-button w-100" data-answer=3 id="q3">
                     </button>
                 </div>
                 <div class="col-5">
-                    <button class="choice btn btn-primary choice-button" data-answer=4 id="q4">
+                    <button class="choice btn btn-primary choice-button w-100" data-answer=4 id="q4">
                     </button>
                 </div>
             </div>
@@ -57,7 +57,7 @@
     let currentQuestionAnswer = zhuyinPracticeList[questionIndex]["answer"]
     
     // Populate the question div
-    let currentQuestionDiv = document.getElementById("question");
+    let currentQuestionDiv = document.getElementById("question-id");
     currentQuestionDiv.innerHTML = zhuyinPracticeList[questionIndex]["question"]
 
     let currentOptionOneDiv = document.getElementById("q1");
