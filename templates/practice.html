@@ -35,6 +35,29 @@
 
         
     </div>
+    <div class="results-container" style="display:none;">
+        <!-- TODO: Add the score of correct, with percentage -->
+        <!-- TODO: List all the incorrect ones with the correct answers -->
+        <div class="container">
+            <div class="row align-items-center result">
+                <h3 class="col-12" id="result-id" ></h3>
+            </div>
+            <div class="row align-items-center result">
+                <h3 class="col-12" id="fraction-id" ></h3>
+            </div>
+            <div class="row align-items-center result">
+                <ul class="practice-list">
+                </ul>
+            </div>
+            <div class="row align-items-center result">
+                <form class="col-12" action="{{ url_for('home') }}" method="get">
+                    <button class="btn btn-primary" type="submit">Return Home</button>
+                </form>
+            </div>
+        </div>
+        
+        
+    </div>
 </div>
 
 <script>
@@ -43,37 +66,30 @@
     const zhuyinPracticeList = JSON.parse('{{zhuyin_practice_list | tojson | safe}}'); 
     console.log(zhuyinPracticeList);
 
+    const incorrectAnswers = [];
+
     // Identify how many questions in this round
-    const questionLength = zhuyinPracticeList.length;
+    const questionsLength = zhuyinPracticeList.length;
     
     // Initialize which question we are on
     var questionIndex = 0;
-    console.log("length : " + questionLength);
+    console.log("length : " + questionsLength);
 
-
-
+    let correctAnswers = 0;
 
     // let currentQuestion = zhuyinPracticeList[questionIndex]
-    let currentQuestionAnswer = zhuyinPracticeList[questionIndex]["answer"]
+    let currentQuestionAnswer = setCorrectAnswer();
     
-    // Populate the question div
-    let currentQuestionDiv = document.getElementById("question-id");
-    currentQuestionDiv.innerHTML = zhuyinPracticeList[questionIndex]["question"]
-
-    let currentOptionOneDiv = document.getElementById("q1");
-    let currentOptionTwoDiv = document.getElementById("q2");
-    let currentOptionThreeDiv = document.getElementById("q3");
-    let currentOptionFourDiv = document.getElementById("q4");
-
-    currentOptionOneDiv.innerHTML = zhuyinPracticeList[questionIndex]["options"][0]
-    currentOptionTwoDiv.innerHTML = zhuyinPracticeList[questionIndex]["options"][1]
-    currentOptionThreeDiv.innerHTML = zhuyinPracticeList[questionIndex]["options"][2]
-    currentOptionFourDiv.innerHTML = zhuyinPracticeList[questionIndex]["options"][3]
+    // Set the first question
+    setQuestion();
 
     
     // Get the buttons to listen to them, so we get the user's answer
     let choiceButtons = document.getElementsByClassName("choice-button");
     
+    //
+    let gotCorrectFirstTry = true;
+
     // Get the current buttons that are populated and only move forward when answer is clicked
     for (let i = 0; i < choiceButtons.length; i++) {
         choiceButtons[i].addEventListener("click", (e) => {
@@ -86,16 +102,131 @@
             // console.log(clickedDataAnswer);
 
             if (clickedDataAnswer == currentQuestionAnswer){
-                console.log("Correct!");
-            } else {
-                console.log("Incorrect");
-            }
+                // If got on first try, give point
+                if (gotCorrectFirstTry) {
+                    console.log("Correct!");
+                    questionIndex ++ ;
+                    correctAnswers ++ ;
+                } else {
+                    // If they previously got incorrect, then no point
+                    questionIndex ++ ;
+                    gotCorrectFirstTry = true;
+                } 
+                // Set the next question
 
+                if (questionIndex < questionsLength){
+                    setQuestion();
+                    currentQuestionAnswer = setCorrectAnswer();
+        
+                    console.log("Now at Index: " + questionIndex);
+                    console.log("Total Correct: " + correctAnswers);
+                } else {
+                    // go to the results page
+                    // TODO!
+                    goToResults();
+                }
+                
+            } else {
+
+                // This makes it only add it once (the first time)
+                if (gotCorrectFirstTry){
+                    // Add it to the review for the end
+                    incorrectAnswers.push(zhuyinPracticeList[questionIndex]);
+                }
+
+                // Flag it as an incorrect answer (no point)
+                gotCorrectFirstTry = false;
+                console.log("Incorrect");
+                e.target.style.backgroundColor = "red";
+
+
+            }
+            
         })
     }
 
+    function setQuestion() {
+        // Populate the question div
+        let currentQuestionDiv = document.getElementById("question-id");
+        currentQuestionDiv.innerHTML = zhuyinPracticeList[questionIndex]["question"];
+
+        let currentOptionOneDiv = document.getElementById("q1");
+        let currentOptionTwoDiv = document.getElementById("q2");
+        let currentOptionThreeDiv = document.getElementById("q3");
+        let currentOptionFourDiv = document.getElementById("q4");
+
+        currentOptionOneDiv.innerHTML = zhuyinPracticeList[questionIndex]["options"][0];
+        currentOptionOneDiv.style.backgroundColor = "aliceblue";
+
+        currentOptionTwoDiv.innerHTML = zhuyinPracticeList[questionIndex]["options"][1];
+        currentOptionTwoDiv.style.backgroundColor = "aliceblue";
+
+        currentOptionThreeDiv.innerHTML = zhuyinPracticeList[questionIndex]["options"][2];
+        currentOptionThreeDiv.style.backgroundColor = "aliceblue";
+
+        currentOptionFourDiv.innerHTML = zhuyinPracticeList[questionIndex]["options"][3];
+        currentOptionFourDiv.style.backgroundColor = "aliceblue";
+    }
     
-    
+    function setCorrectAnswer() {
+        currentAnswer = zhuyinPracticeList[questionIndex]["answer"];
+        return currentAnswer
+    }
+
+    function goToResults() {
+
+        // Remove the contents container and show the results container
+        let contentContainer = document.querySelector(".content-container");
+        contentContainer.style.display = 'none';
+
+        let resultsContainer = document.querySelector(".results-container");
+        resultsContainer.style.display = 'block';
+
+        const percentage = Math.round(correctAnswers/questionsLength*100);
+        console.log(correctAnswers);
+        console.log(questionsLength);
+        
+        let resultHeader = document.querySelector("#result-id");
+        resultHeader.innerHTML = `${percentage}%`;
+
+        let fractionHeader = document.querySelector("#fraction-id");
+        fractionHeader.innerHTML = `${correctAnswers} / ${questionsLength}`;
+
+        if (incorrectAnswers.length > 0) {
+            // Find the unordered practice list if any incorrects
+            let practiceListDiv = document.querySelector(".practice-list");
+            
+
+            // Create the li item
+            let listItem = document.createElement("li");
+
+            // Change the text content
+            listItem.textContent = "Missed Zhuyin:"
+
+            // Add the corrections
+            practiceListDiv.appendChild(listItem) ;
+
+
+            // Iterate through the incorrect answers
+            incorrectAnswers.forEach((incorrect) => {
+
+               // Create the li item
+               let listItem = document.createElement("li");
+
+               // Change the text content
+               listItem.textContent = `${incorrect.question} = ${incorrect.options[incorrect.answer - 1]}`
+            
+               // Add the corrections
+               practiceListDiv.appendChild(listItem) ;
+                
+
+            })
+        }
+
+
+        console.log(incorrectAnswers);
+        
+    }
     
 
     
