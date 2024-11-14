@@ -3,30 +3,102 @@
 <div style="padding-bottom:100px;">
 
     <div class="content-container">
-        <h1>Practicing: {{ type_to_practice }}</h1>
+        <!-- <h1>Practicing: {{ type_to_practice }}</h1> -->
         <!-- <h3>ㄓˋ ㄧㄣ ㄌㄧㄢˋ ㄒㄧˊ</h3> -->
 
-        {% for zhuyin in zhuyin_practice_list %}
-            <div class="container">
-                <!-- {{zhuyin}} -->
-                <div class="row align-items-center option">
-                    <div class="col-12"><h1>{{zhuyin.question}}</h1></div>
+        <div class="container">
+            <!-- {{zhuyin}} -->
+            <div class="row align-items-center question">
+                <div class="col-12"><h1 id="question"></h1></div>
+            </div>
+            <div class="row justify-content-between options">
+                <div class="col-5">
+                    <button class="choice btn btn-primary choice-button" data-answer=1 id="q1">
+                    </button>
                 </div>
-                <div class="row align-items-center option">
-                    <div class="col-6"><h1>{{zhuyin.options[0]}}</h1></div>
-                    <div class="col-6"><h1>{{zhuyin.options[1]}}</h1></div>
-                </div>
-                <div class="row align-items-center option">
-                    <div class="col-6"><h1>{{zhuyin.options[2]}}</h1></div>
-                    <div class="col-6"><h1>{{zhuyin.options[3]}}</h1></div>
+                <div class="col-5">
+                    <button class="choice btn btn-primary choice-button" data-answer=2 id="q2">
+                    </button>
                 </div>
             </div>
-            
-        {% endfor %}
+            <div class="row justify-content-between options">
+                <div class="col-5">
+                    <button class="choice btn btn-primary choice-button" data-answer=3 id="q3">
+                    </button>
+                </div>
+                <div class="col-5">
+                    <button class="choice btn btn-primary choice-button" data-answer=4 id="q4">
+                    </button>
+                </div>
+            </div>
+        </div>
 
         
     </div>
 </div>
 
+<script>
+
+    // Get the Practice List from flask via Json parsing
+    const zhuyinPracticeList = JSON.parse('{{zhuyin_practice_list | tojson | safe}}'); 
+    console.log(zhuyinPracticeList);
+
+    // Identify how many questions in this round
+    const questionLength = zhuyinPracticeList.length;
+    
+    // Initialize which question we are on
+    var questionIndex = 0;
+    console.log("length : " + questionLength);
+
+
+
+
+    // let currentQuestion = zhuyinPracticeList[questionIndex]
+    let currentQuestionAnswer = zhuyinPracticeList[questionIndex]["answer"]
+    
+    // Populate the question div
+    let currentQuestionDiv = document.getElementById("question");
+    currentQuestionDiv.innerHTML = zhuyinPracticeList[questionIndex]["question"]
+
+    let currentOptionOneDiv = document.getElementById("q1");
+    let currentOptionTwoDiv = document.getElementById("q2");
+    let currentOptionThreeDiv = document.getElementById("q3");
+    let currentOptionFourDiv = document.getElementById("q4");
+
+    currentOptionOneDiv.innerHTML = zhuyinPracticeList[questionIndex]["options"][0]
+    currentOptionTwoDiv.innerHTML = zhuyinPracticeList[questionIndex]["options"][1]
+    currentOptionThreeDiv.innerHTML = zhuyinPracticeList[questionIndex]["options"][2]
+    currentOptionFourDiv.innerHTML = zhuyinPracticeList[questionIndex]["options"][3]
+
+    
+    // Get the buttons to listen to them, so we get the user's answer
+    let choiceButtons = document.getElementsByClassName("choice-button");
+    
+    // Get the current buttons that are populated and only move forward when answer is clicked
+    for (let i = 0; i < choiceButtons.length; i++) {
+        choiceButtons[i].addEventListener("click", (e) => {
+            
+            // Get the chosen Answer
+            let clickedDataAnswer = e.target.getAttribute("data-answer");
+            let clickedAnswer = e.target.innerHTML; 
+
+            // console.log(clickedAnswer);
+            // console.log(clickedDataAnswer);
+
+            if (clickedDataAnswer == currentQuestionAnswer){
+                console.log("Correct!");
+            } else {
+                console.log("Incorrect");
+            }
+
+        })
+    }
+
+    
+    
+    
+
+    
+</script>
 
 {% endblock %}

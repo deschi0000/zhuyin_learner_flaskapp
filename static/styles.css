@@ -8,6 +8,7 @@ body {
     margin: 10rem auto;
     text-align: center;
     background-color: rgb(68, 68, 68);
+    padding: 2rem;
 }
 
 .question-container {
@@ -15,11 +16,29 @@ body {
     margin: 1rem;
     min-height: 20rem;
 }
-.row {
+
+.question {
     background-color: aliceblue;
 }
-.option {
+
+.options, .question {
+    margin: 2rem;
+}
+
+.choice {
+    border: solid;
     min-height: 10rem;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; 
+    /* background-color: bisque; */
+    background-color: aliceblue;
+    font-size: 40px;
+
+}
+
+.choice:hover {
+    background-color: rgb(219, 236, 252);
 }
 
 .button-container {
