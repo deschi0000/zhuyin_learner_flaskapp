@@ -4,9 +4,22 @@ body {
 }
 
 .content-container {
-    width: 80%;
+    width: 50%;
     margin: 10rem auto;
     text-align: center;
+    background-color: rgb(68, 68, 68);
+}
+
+.question-container {
+    background-color: red;
+    margin: 1rem;
+    min-height: 20rem;
+}
+.row {
+    background-color: aliceblue;
+}
+.option {
+    min-height: 10rem;
 }
 
 .button-container {

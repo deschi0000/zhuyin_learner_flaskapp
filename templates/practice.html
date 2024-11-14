@@ -5,11 +5,25 @@
     <div class="content-container">
         <h1>Practicing: {{ type_to_practice }}</h1>
         <!-- <h3>ㄓˋ ㄧㄣ ㄌㄧㄢˋ ㄒㄧˊ</h3> -->
-        <ol>
-            {% for zhuyin in zhuyin_practice_list %}
-                <li>{{zhuyin}}</li>
-            {% endfor %}
-        </ol>
+
+        {% for zhuyin in zhuyin_practice_list %}
+            <div class="container">
+                <!-- {{zhuyin}} -->
+                <div class="row align-items-center option">
+                    <div class="col-12"><h1>{{zhuyin.question}}</h1></div>
+                </div>
+                <div class="row align-items-center option">
+                    <div class="col-6"><h1>{{zhuyin.options[0]}}</h1></div>
+                    <div class="col-6"><h1>{{zhuyin.options[1]}}</h1></div>
+                </div>
+                <div class="row align-items-center option">
+                    <div class="col-6"><h1>{{zhuyin.options[2]}}</h1></div>
+                    <div class="col-6"><h1>{{zhuyin.options[3]}}</h1></div>
+                </div>
+            </div>
+            
+        {% endfor %}
+
         
     </div>
 </div>

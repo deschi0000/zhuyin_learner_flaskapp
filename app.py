@@ -47,3 +47,30 @@ def practice(selected_type):
     return render_template("practice.html",
                            type_to_practice = selected_type.capitalize(),
                            zhuyin_practice_list = zhuyin_practice_list)
+
+
+
+# @app.route("/practice/<selected_type>", methods=["GET", "POST"])
+# def practice(selected_type):
+#     zhuyin_practice_list = load_zhuyin_json_list(selected_type)
+
+#     if request.method == "POST":
+#         # Process answers
+#         results = []
+#         for i, zhuyin in enumerate(zhuyin_practice_list, start=1):
+#             user_answer = request.form.get(f"answer_{i}")
+#             correct = user_answer == zhuyin["answer"]
+#             results.append({
+#                 "question": zhuyin["question"],
+#                 "user_answer": user_answer,
+#                 "correct_answer": zhuyin["answer"],
+#                 "correct": correct
+#             })
+
+#         # Render results page
+#         return render_template("results.html", results=results, type_to_practice=selected_type.capitalize())
+
+#     # Initial GET request to load the practice questions
+#     return render_template("practice.html",
+#                            type_to_practice=selected_type.capitalize(),
+#                            zhuyin_practice_list=zhuyin_practice_list)
