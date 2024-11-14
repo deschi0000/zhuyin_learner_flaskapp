@@ -89,9 +89,9 @@ def load_zhuyin_json_list(zhuyin_type):
     # else:
     #     return f"Incorrect Argument provided: {zhuyin_type}"
 
-    if zhuyin_type == "consonant":
+    if zhuyin_type == "consonants":
         return consonant_list
-    elif zhuyin_type == "vowel":
+    elif zhuyin_type == "vowels":
         return vowel_list
     elif zhuyin_type == "all":
         return all_list
