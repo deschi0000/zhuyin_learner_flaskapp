@@ -18,8 +18,12 @@ function updateFormAction() {
         form.action = "/practice/consonants"
     } else if (selectedValue === "vowels") {
         form.action = "/practice/vowels"
+    } else if (selectedValue === "combinations") {
+        form.action = "/practice/combinations"
+    } else if (selectedValue === "hanzi") {
+        form.action = "/practice/hanzi"
     } else {
-        form.action = "practice/all"
+        form.action = "/practice/all"
     }
     console.log(form.action);
 }

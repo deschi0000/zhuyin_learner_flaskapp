@@ -59,6 +59,8 @@ def load_zhuyin_json_list(zhuyin_type):
 
     consonant_list = []
     vowel_list = []
+    combination_list = []
+    hanzi_list = []
     all_list = []
     file_path = os.path.join(os.getcwd(), 'zhuyin.json')
     
@@ -71,8 +73,14 @@ def load_zhuyin_json_list(zhuyin_type):
             # Get the vowels
             vowel_list = data["vowels"]
 
+            # Get the combinations
+            combination_list = data["combinations"]
+
+            # Get the hanzi
+            hanzi_list = data["hanzi"]
+
             #Get everything
-            all_list = consonant_list + vowel_list
+            all_list = consonant_list + vowel_list + combination_list + hanzi_list 
 
     except FileNotFoundError:
         print(f"Error: The file '{file_path}' was not found.")
@@ -93,6 +101,10 @@ def load_zhuyin_json_list(zhuyin_type):
         return consonant_list
     elif zhuyin_type == "vowels":
         return vowel_list
+    elif zhuyin_type == "combinations":
+        return combination_list
+    elif zhuyin_type == "hanzi":
+        return hanzi_list
     elif zhuyin_type == "all":
         return all_list
     else:
