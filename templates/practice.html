@@ -1,11 +1,13 @@
 {% extends "layout.html" %}
 {% block body %}
+
+<!-- Audio elements for sounds -->
+<audio id="correct-sound" src="{{ url_for('static', filename='sounds/correct.wav') }}" preload="auto"></audio>
+<audio id="incorrect-sound" src="{{ url_for('static', filename='sounds/incorrect.wav') }}" preload="auto"></audio>
+
 <div style="padding-bottom:100px;">
 
     <div class="content-container">
-        <!-- <h1>Practicing: {{ type_to_practice }}</h1> -->
-        <!-- <h3>ㄓˋ ㄧㄣ ㄌㄧㄢˋ ㄒㄧˊ</h3> -->
-
         <div class="container">
             <!-- {{zhuyin}} -->
             <div class="row align-items-center question">
@@ -31,9 +33,7 @@
                     </button>
                 </div>
             </div>
-        </div>
-
-        
+        </div> 
     </div>
     <div class="results-container" style="display:none;">
         <!-- TODO: Add the score of correct, with percentage -->
@@ -55,16 +55,14 @@
                 </form>
             </div>
         </div>
-        
-        
     </div>
 </div>
 
 <script>
 
     // Get the Practice List from flask via Json parsing
+    // console.log(zhuyinPracticeList);
     const zhuyinPracticeList = JSON.parse('{{zhuyin_practice_list | tojson | safe}}'); 
-    console.log(zhuyinPracticeList);
 
     const incorrectAnswers = [];
 
@@ -79,6 +77,10 @@
 
     // let currentQuestion = zhuyinPracticeList[questionIndex]
     let currentQuestionAnswer = setCorrectAnswer();
+
+    // Set up audio elements
+    const correctSound = document.getElementById('correct-sound');
+    const incorrectSound = document.getElementById('incorrect-sound');
     
     // Set the first question
     setQuestion();
@@ -100,7 +102,7 @@
 
             // console.log(clickedAnswer);
             // console.log(clickedDataAnswer);
-
+            
             if (clickedDataAnswer == currentQuestionAnswer){
                 // If got on first try, give point
                 if (gotCorrectFirstTry) {
@@ -108,12 +110,17 @@
                     questionIndex ++ ;
                     correctAnswers ++ ;
                 } else {
-                    // If they previously got incorrect, then no point
+                    // If they previously got incorrect, then no point,
+                    // ...but still increment
                     questionIndex ++ ;
                     gotCorrectFirstTry = true;
                 } 
-                // Set the next question
+                // Play the correct sound
+                correctSound.currentTime = 0; 
+                correctSound.play();
 
+                // Set the next question, only if the index is smaller than
+                // the total length of questions
                 if (questionIndex < questionsLength){
                     setQuestion();
                     currentQuestionAnswer = setCorrectAnswer();
@@ -121,12 +128,16 @@
                     console.log("Now at Index: " + questionIndex);
                     console.log("Total Correct: " + correctAnswers);
                 } else {
-                    // go to the results page
-                    // TODO!
+                    // If not, go to the results page
                     goToResults();
                 }
-                
             } else {
+                
+                // Didn't get the first try
+
+                // Play incorrect sound
+                incorrectSound.currentTime = 0; 
+                incorrectSound.play();
 
                 // This makes it only add it once (the first time)
                 if (gotCorrectFirstTry){
@@ -137,11 +148,10 @@
                 // Flag it as an incorrect answer (no point)
                 gotCorrectFirstTry = false;
                 console.log("Incorrect");
+
+                // Show some red/incorrect feedback
                 e.target.style.backgroundColor = "red";
-
-
             }
-            
         })
     }
 
@@ -183,8 +193,8 @@
         resultsContainer.style.display = 'block';
 
         const percentage = Math.round(correctAnswers/questionsLength*100);
-        console.log(correctAnswers);
-        console.log(questionsLength);
+        // console.log(correctAnswers);
+        // console.log(questionsLength);
         
         let resultHeader = document.querySelector("#result-id");
         resultHeader.innerHTML = `${percentage}%`;
@@ -195,16 +205,15 @@
         if (incorrectAnswers.length > 0) {
             // Find the unordered practice list if any incorrects
             let practiceListDiv = document.querySelector(".practice-list");
-            
 
-            // Create the li item
+
+            // Create the li item for the Missed header
             let listItem = document.createElement("li");
-
             // Change the text content
             listItem.textContent = "Missed Zhuyin:"
-
             // Add the corrections
             practiceListDiv.appendChild(listItem) ;
+
 
 
             // Iterate through the incorrect answers
@@ -219,16 +228,10 @@
                // Add the corrections
                practiceListDiv.appendChild(listItem) ;
                 
-
             })
         }
-
-
         console.log(incorrectAnswers);
-        
     }
-    
-
     
 </script>
 
